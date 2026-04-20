@@ -38,7 +38,7 @@ export class Round {
     bet(playerId: string, amount: number): void {
         const player = this.findPlayer(playerId);
         if (!player) throw new Error('Player not in the game');
-
+        if (player.balance < amount) throw new Error('Insufficient balance');
         if (this._state !== GameState.BET) throw new Error('Must be the betting phase');
         if (this.bets.has(playerId)) throw new Error('Player has already bet');
         if (amount < this.economyConfig.minBet) throw new Error('Bet too low');

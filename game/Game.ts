@@ -29,24 +29,24 @@ export class Game {
 
     addPlayer(player: Player): void {
         if (this.players.length >= this.gameConfig.maxGamePlayers) throw new Error('Maximum players number reached');
-        if (this.midRound()) throw new Error('Cannot add player mid round');
+        if (this.isMidRound()) throw new Error('Cannot add player mid round');
         this.players.push(player);
     }
 
     removePlayer(playerId: string): void {
-        if (this.midRound()) throw new Error('Cannot remove player mid round');
+        if (this.isMidRound()) throw new Error('Cannot remove player mid round');
         const index = this.players.findIndex(player => player.id === playerId);
         if (index >= 0) this.players.splice(index, 1);
     }
 
-    private midRound(): boolean {
+    private isMidRound(): boolean {
         const lastRound = this._rounds[this._rounds.length - 1];
         if (!lastRound) return false;
         return lastRound.state !== GameState.END && lastRound.state !== GameState.BET;
     }
 
     startRound(): void {
-        if (this.midRound()) throw new Error('Cannot run 2 rounds at once');
+        if (this.isMidRound()) throw new Error('Cannot run 2 rounds at once');
 
         if (this.deck.size / this.deck.fullSize < this.gameConfig.shuffleThreshold) {
             this.deck.shuffle();

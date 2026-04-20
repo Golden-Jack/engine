@@ -1,0 +1,21 @@
+{
+  "name": "golden-jack-engine",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/golden-jack/engine#readme",
+  "bugs": {
+    "url": "https://github.com/golden-jack/engine/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/golden-jack/engine.git"
+  },
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "uncrypto": "^0.1.3"
+  }
+}

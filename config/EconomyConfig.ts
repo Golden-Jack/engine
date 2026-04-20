@@ -2,7 +2,7 @@ export interface EconomyConfig {
     initialBalance: number,
     minBet: number,
     maxBet?: number,
-    houseBankroll: number,
+    bankroll: number,
     replenish?: {
         frequency: 'daily' | 'weekly' | 'monthly',
         amount: number,
@@ -13,5 +13,5 @@ export interface EconomyConfig {
 export const DEFAULT_ECONOMY_CONFIG: EconomyConfig = {
     initialBalance: 1000,
     minBet: 1,
-    houseBankroll: 1_000_000,
+    bankroll: 1_000_000,
 }

@@ -1,13 +1,9 @@
-import { Actor } from './Actor';
-
-export class Player extends Actor {
+export class Player {
     constructor(
-        id: string,
+        readonly id: string,
         public readonly username: string,
         private _balance: number
-    ) {
-        super(id);
-    }
+    ) {}
 
     get displayName(): string {
         return this.username;

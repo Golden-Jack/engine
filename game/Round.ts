@@ -6,7 +6,7 @@ import { Hand } from '../models/Hand';
 import { Player } from '../models/Player';
 import { GameState } from './GameState';
 import { Casino } from './Casino';
-import { Outcome } from './Oucome';
+import { Outcome } from './Outcome';
 import { HandEvaluator } from './HandEvaluator';
 
 export class Round {

@@ -28,7 +28,7 @@ export class Game {
     }
 
     addPlayer(player: Player): void {
-        if (this.players.length === this.gameConfig.maxGamePlayers) throw new Error('Maximum players number reached');
+        if (this.players.length >= this.gameConfig.maxGamePlayers) throw new Error('Maximum players number reached');
         if (this.midRound()) throw new Error('Cannot add player mid round');
         this.players.push(player);
     }

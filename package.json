@@ -1,8 +1,9 @@
 {
   "name": "@golden-jack/engine",
   "description": "Golden Jack Game Engine",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
+  "main": "main.ts",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },

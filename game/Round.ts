@@ -168,8 +168,13 @@ export class Round {
     }
 
     private transaction(to: Player, amount: number): void {
-        to.credit(amount);
         Casino.instance.debit(amount);
+        try {
+            to.credit(amount);
+        } catch (error) {
+            Casino.instance.credit(amount);
+            throw new Error('Cannot complete the transaction');
+        }
     }
 
     private findBet(playerId: string): number {

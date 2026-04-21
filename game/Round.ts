@@ -65,7 +65,7 @@ export class Round {
 
         for (let i = 0; i < this.gameConfig.dealCardsNumber; i++) {
             for (const player of this.players) {
-                this.playerHands.get(player.id)!.add(this.deck.draw());
+                this.getHandOrThrow(player.id).add(this.deck.draw());
             }
 
             this.dealerHand.add(this.deck.draw());
@@ -80,12 +80,16 @@ export class Round {
         return this.playerHands.get(playerId);
     }
 
+    private getHandOrThrow(playerId: string): Hand {
+        const hand = this.playerHands.get(playerId);
+        if (!hand) throw new Error('No hand for this player');
+        return hand;
+    }
+
     hit(playerId: string): void {
         this.ensurePlayerCanPlay(playerId);
 
-        const hand: Hand | undefined = this.findHand(playerId);
-        if (!hand) throw new Error('No hand for this player');
-
+        const hand: Hand = this.getHandOrThrow(playerId);
         hand.add(this.deck.draw());
 
         if (hand.isBust || hand.score === this.gameConfig.bustThreshold) this.nextPlayer();
@@ -103,19 +107,25 @@ export class Round {
     }
 
     private isPlayerTurn(playerId: string): boolean {
-        return this.players[this.currentPlayerIndex]!.id === playerId;
+        return this.currentPlayer.id === playerId;
+    }
+
+    private get currentPlayer(): Player {
+        const player = this.players[this.currentPlayerIndex];
+        if (!player) throw new Error('No current player');
+        return player;
     }
 
     private nextPlayer(): void {
         this.currentPlayerIndex++
-  
+
         this.skipOnBJ();
     }
 
     private skipOnBJ(): void {
         while (
             this.currentPlayerIndex < this.players.length &&
-            this.findHand(this.players[this.currentPlayerIndex]!.id)!.isBlackjack
+            this.getHandOrThrow(this.currentPlayer.id).isBlackjack
         ) this.currentPlayerIndex++;
 
         if (this.currentPlayerIndex >= this.players.length) {
@@ -147,8 +157,8 @@ export class Round {
         if (this._state !== GameState.SETTLE) throw new Error('Must be in settle phase');
 
         for (const player of this.players) {
-            const bet: number = this.findBet(player.id);
-            const outcome: Outcome = HandEvaluator.compare(this.findHand(player.id)!, this.dealerHand);
+            const bet: number = this.getBetOrThrow(player.id);
+            const outcome: Outcome = HandEvaluator.compare(this.getHandOrThrow(player.id), this.dealerHand);
             this.outcomes.set(player.id, outcome);
             switch (outcome) {
                 case Outcome.BLACKJACK:
@@ -178,8 +188,10 @@ export class Round {
         }
     }
 
-    private findBet(playerId: string): number {
-        return this.bets.get(playerId)!;
+    private getBetOrThrow(playerId: string): number {
+        const bet = this.bets.get(playerId);
+        if (bet === undefined) throw new Error('No bet for this player');
+        return bet;
     }
 
     findOutcome(playerId: string): Outcome | undefined {

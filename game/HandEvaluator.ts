@@ -1,5 +1,5 @@
 import { Hand } from '../models/Hand';
-import { Outcome } from './Oucome';
+import { Outcome } from './Outcome';
 
 export class HandEvaluator {
     static compare(player: Hand, dealer: Hand): Outcome {

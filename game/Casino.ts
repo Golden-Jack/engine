@@ -25,7 +25,7 @@ export class Casino {
 
     debit(amount: number): void {
         if (amount <= 0) throw new Error('Amount must be positive');
-        if (!this.canCover(amount)) throw new Error('House cannot cover House amount');
+        if (!this.canCover(amount)) throw new Error('Casino cannot cover this amount');
         this.bankroll -= amount;
     }
 
@@ -39,5 +39,9 @@ export class Casino {
 
     get balance(): number {
         return this.bankroll;
+    }
+
+    static reset(): void {
+        this._instance = null;
     }
 }

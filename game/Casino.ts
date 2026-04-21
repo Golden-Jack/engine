@@ -40,4 +40,8 @@ export class Casino {
     get balance(): number {
         return this.bankroll;
     }
+
+    static reset(): void {
+        this._instance = null;
+    }
 }

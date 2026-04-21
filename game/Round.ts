@@ -12,7 +12,7 @@ import { HandEvaluator } from './HandEvaluator';
 export class Round {
     private _state: GameState = GameState.BET;
     private readonly playerHands: Map<string, Hand>;
-    readonly dealerHand: Hand = new Hand();
+    readonly dealerHand: Hand;
     private readonly bets: Map<string, number> = new Map<string, number>();
     private readonly outcomes: Map<string, Outcome> = new Map<string, Outcome>();
     private currentPlayerIndex: number = 0;
@@ -25,9 +25,10 @@ export class Round {
     ) {
         if (players.length === 0) throw new Error('A round needs at least one player to start');
 
+        this.dealerHand = new Hand(gameConfig);
         this.playerHands = new Map<string, Hand>();
         for (const player of players) {
-            this.playerHands.set(player.id, new Hand());
+            this.playerHands.set(player.id, new Hand(gameConfig));
         }
     }
 
@@ -87,7 +88,7 @@ export class Round {
 
         hand.add(this.deck.draw());
 
-        if (hand.isBust || hand.score === 21) this.nextPlayer();
+        if (hand.isBust || hand.score === this.gameConfig.bustThreshold) this.nextPlayer();
     }
 
     stand(playerId: string): void {
@@ -135,8 +136,8 @@ export class Round {
     }
 
     private dealerShallHit(): boolean {
-        return this.dealerHand.score < 17 || (
-            this.dealerHand.score === 17 &&
+        return this.dealerHand.score < this.gameConfig.dealerStandThreshold || (
+            this.dealerHand.score === this.gameConfig.dealerStandThreshold &&
             this.dealerHand.isSoft &&
             this.gameConfig.dealerHitsOnSoft17
         )

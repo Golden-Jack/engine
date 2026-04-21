@@ -1,7 +1,10 @@
+import type { GameConfig } from '../config/GameConfig';
 import { Card, Rank } from './Card';
 
 export class Hand implements Iterable<Card> {
     readonly cards: Card[] = [];
+
+    constructor(private readonly gameConfig: GameConfig) {}
 
     [Symbol.iterator](): Iterator<Card> {
         return this.cards[Symbol.iterator]();
@@ -20,8 +23,8 @@ export class Hand implements Iterable<Card> {
             if (card.rank === Rank.ACE) aces++;
         }
 
-        while (score > 21 && aces > 0) {
-            score -= 10;
+        while (score > this.gameConfig.bustThreshold && aces > 0) {
+            score -= this.gameConfig.aceDowngrade;
             aces--;
         }
 
@@ -33,11 +36,11 @@ export class Hand implements Iterable<Card> {
     }
 
     get isBlackjack(): boolean {
-        return this.size === 2 && this.score === 21;
+        return this.size === 2 && this.score === this.gameConfig.bustThreshold;
     }
 
     get isBust(): boolean {
-        return this.score > 21;
+        return this.score > this.gameConfig.bustThreshold;
     }
 
     get isSoft(): boolean {
@@ -49,6 +52,6 @@ export class Hand implements Iterable<Card> {
             if (card.rank === Rank.ACE) aces++;
         }
 
-        return aces > 0 && raw <= 21;
+        return aces > 0 && raw <= this.gameConfig.bustThreshold;
     }
 }

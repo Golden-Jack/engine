@@ -1,7 +1,7 @@
 {
   "name": "@golden-jack/engine",
   "description": "Golden Jack Game Engine",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "license": "MIT",
   "main": "main.ts",
   "publishConfig": {

@@ -16,7 +16,9 @@ Will soon be usable via npm packages.
 Basic usage :
 ```ts
 import {
-    GameConfig, EconomyConfig, Casino, Player, Game
+    DEFAULT_GAME_CONFIG, DEFAULT_ECONOMY_CONFIG,
+    GameConfig, EconomyConfig,
+    Casino, Player, Game
 } from '@golden-jack/engine';
 
 const gameConfig: GameConfig = DEFAULT_GAME_CONFIG;

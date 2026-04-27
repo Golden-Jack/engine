@@ -19,12 +19,12 @@ export class Casino {
     }
 
     credit(amount: number): void {
-        if (amount <= 0) throw new Error('Amount must be positive');
+        if (amount < 0) throw new Error('Amount cannot be negative');
         this.bankroll += amount;
     }
 
     debit(amount: number): void {
-        if (amount <= 0) throw new Error('Amount must be positive');
+        if (amount < 0) throw new Error('Amount cannot be negative');
         if (!this.canCover(amount)) throw new Error('Casino cannot cover this amount');
         this.bankroll -= amount;
     }

@@ -160,22 +160,19 @@ export class Round {
             const bet: number = this.getBetOrThrow(player.id);
             const outcome: Outcome = HandEvaluator.compare(this.getHandOrThrow(player.id), this.dealerHand);
             this.outcomes.set(player.id, outcome);
-            switch (outcome) {
-                case Outcome.BLACKJACK:
-                    this.transaction(player, bet + bet * this.gameConfig.blackjackPayout);
-                    break;
-                case Outcome.WIN:
-                    this.transaction(player, bet * 2);
-                    break;
-                case Outcome.PUSH:
-                    this.transaction(player, bet);
-                    break;
-                default:
-                    break;
-            }
+            this.transaction(player, bet + this.diff(outcome, bet));
         }
 
         this._state = GameState.END;
+    }
+
+    diff(outcome: Outcome, bet: number): number {
+        switch (outcome) {
+            case Outcome.BLACKJACK: return bet * this.gameConfig.blackjackPayout;
+            case Outcome.WIN: return bet;
+            case Outcome.PUSH: return 0;
+            default: return -bet;
+        }
     }
 
     private transaction(to: Player, amount: number): void {

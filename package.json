@@ -7,13 +7,13 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
-  "homepage": "https://github.com/golden-jack/engine#readme",
+  "homepage": "https://github.com/Golden-Jack/engine#readme",
   "bugs": {
-    "url": "https://github.com/golden-jack/engine/issues"
+    "url": "https://github.com/Golden-Jack/engine/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/golden-jack/engine.git"
+    "url": "git+https://github.com/Golden-Jack/engine.git"
   },
   "type": "module",
   "scripts": {

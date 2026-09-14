@@ -5,7 +5,7 @@
   "license": "MIT",
   "main": "main.ts",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "registry": "https://registry.npmjs.org"
   },
   "homepage": "https://github.com/golden-jack/engine#readme",
   "bugs": {

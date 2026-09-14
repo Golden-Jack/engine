@@ -2,7 +2,8 @@ name: 'Publish to npm'
 
 on:
     release:
-        types: [created]
+        types: [published]
+    workflow_dispatch:
 
 jobs:
     publish:
@@ -10,14 +11,24 @@ jobs:
         permissions:
             packages: write
             contents: read
+            id-token: write
         steps:
             - uses: actions/checkout@v6
             - uses: actions/setup-node@v6
               with:
                 node-version: '25'
-                registry-url: 'https://npm.pkg.github.com'
+                registry-url: 'https://registry.npmjs.org'
             - run: npm ci
             - run: npm run build
-            - run: npm publish --access public
+            - name: Determine npm tag
+              id: npm_tag
+              run: |
+                VERSION=$(node -p "require('./package.json').version")
+                if [[ "$VERSION" == *-* ]]; then
+                    echo "tag=beta" >> "$GITHUB_OUTPUT"
+                else
+                    echo "tag=latest" >> "$GITHUB_OUTPUT"
+                fi
+            - run: npm publish --access public --provenance --tag ${{ steps.npm_tag.outputs.tag }}
               env:
-                NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

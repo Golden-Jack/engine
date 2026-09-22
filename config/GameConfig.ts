@@ -8,7 +8,10 @@ export interface GameConfig {
     authorizeHitOnBJ: boolean,
     bustThreshold: number,
     dealerStandThreshold: number,
-    aceDowngrade: number
+    aceDowngrade: number,
+    maxSplitHands: number,
+    doubleOnly: number[],
+    allowDoubleAfterSplit: boolean
 }
 
 export const DEFAULT_GAME_CONFIG: GameConfig = {
@@ -21,5 +24,8 @@ export const DEFAULT_GAME_CONFIG: GameConfig = {
     authorizeHitOnBJ: false,
     bustThreshold: 21,
     dealerStandThreshold: 17,
-    aceDowngrade: 10
+    aceDowngrade: 10,
+    maxSplitHands: 4,
+    doubleOnly: [],
+    allowDoubleAfterSplit: false
 }

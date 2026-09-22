@@ -84,7 +84,6 @@ export class Round {
         this.skipResolvedHands();
     }
 
-    /** Nombre de mains d'un joueur (>1 après un split). */
     handCount(playerId: string): number {
         return this.getPlayerHandsOrThrow(playerId).length;
     }
@@ -99,6 +98,13 @@ export class Round {
 
     isFromSplit(playerId: string, handIndex: number = 0): boolean {
         return this.playerHands.get(playerId)?.[handIndex]?.fromSplit ?? false;
+    }
+
+    getCurrentHandIndex(playerId: string): number {
+        if (this._state !== GameState.PLAYER) return -1;
+        if (this.currentPlayerIndex >= this.players.length) return -1;
+        if (this.players[this.currentPlayerIndex]!.id !== playerId) return -1;
+        return this.currentHandIndex;
     }
 
     private getPlayerHandsOrThrow(playerId: string): PlayerHandState[] {
@@ -156,8 +162,6 @@ export class Round {
         player.debit(state.bet);
         Casino.instance.credit(state.bet);
 
-        // Hand n'exposant pas de retrait de carte : on reconstruit la main gardée
-        // et on crée la nouvelle main à partir de la seconde carte.
         const keptHand = new Hand(this.gameConfig);
         keptHand.add(first);
         state.hand = keptHand;
@@ -255,7 +259,6 @@ export class Round {
         for (const player of this.players) {
             for (const state of this.getPlayerHandsOrThrow(player.id)) {
                 let outcome: Outcome = HandEvaluator.compare(state.hand, this.dealerHand);
-                // Un 21 obtenu après split n'est pas un blackjack naturel (pas de payout 3:2).
                 if (outcome === Outcome.BLACKJACK && state.fromSplit) outcome = Outcome.WIN;
 
                 state.outcome = outcome;

@@ -25,14 +25,6 @@ function renderHand(hand: Hand, label: string): string {
     return `${label} [${cards}] => ${hand.score}${hand.isBust ? ' (BUST)' : ''}${hand.isBlackjack ? ' (BLACKJACK)' : ''}`;
 }
 
-function findActiveHandIndex(roundHandCount: number, getHand: (i: number) => Hand | undefined): number {
-    for (let i = 0; i < roundHandCount; i++) {
-        const hand = getHand(i);
-        if (hand && !hand.isBust && hand.score < gameConfig.bustThreshold) return i;
-    }
-    return -1;
-}
-
 function isSplittable(hand: Hand): boolean {
     const [first, second] = [...hand];
     return hand.size === 2 && !!first && !!second && first.rank === second.rank;
@@ -70,7 +62,7 @@ async function playRound(): Promise<void> {
 
     while (round.state === GameState.PLAYER) {
         const handCount = round.handCount(player.id);
-        const activeIndex = findActiveHandIndex(handCount, i => round.findHand(player.id, i));
+        const activeIndex = round.getCurrentHandIndex(player.id);
 
         console.log('\n--- Dealer ---');
         console.log(renderHand(round.dealerHand, 'Dealer'));

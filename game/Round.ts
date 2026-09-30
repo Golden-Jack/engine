@@ -153,7 +153,7 @@ export class Round {
         if (state.hand.size !== 2) throw new Error('Can only split on the initial two cards');
 
         const [first, second] = state.hand.cards;
-        if (!first || !second || first.rank !== second.rank) throw new Error('Cards must match to split');
+        if (!first || !second || (!this.gameConfig.allowSplitOnDifferentSymbol && first.rank !== second.rank)) throw new Error('Cards must match to split');
 
         const player = this.findPlayer(playerId)!;
         if (player.balance < state.bet) throw new Error('Insufficient balance to split');

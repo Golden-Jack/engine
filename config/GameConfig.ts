@@ -11,7 +11,8 @@ export interface GameConfig {
     aceDowngrade: number,
     maxSplitHands: number,
     doubleOnly: number[],
-    allowDoubleAfterSplit: boolean
+    allowDoubleAfterSplit: boolean,
+    allowSplitOnDifferentSymbol: boolean
 }
 
 export const DEFAULT_GAME_CONFIG: GameConfig = {
@@ -27,5 +28,6 @@ export const DEFAULT_GAME_CONFIG: GameConfig = {
     aceDowngrade: 10,
     maxSplitHands: 4,
     doubleOnly: [],
-    allowDoubleAfterSplit: false
+    allowDoubleAfterSplit: false,
+    allowSplitOnDifferentSymbol: true
 }
